@@ -1,0 +1,3 @@
+Username: admin
+Password: vWpnmOOSZy1I
+(Ganti password setelah login lewat halaman Settings, lalu hapus berkas ini.)

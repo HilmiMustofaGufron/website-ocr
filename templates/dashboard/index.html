@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-eyebrow">Ringkasan sistem</div>
+<h1 class="page-title">Dashboard</h1>
+
+{% for p in peringatan %}
+<div class="banner-peringatan" role="alert">{{ p }}</div>
+{% endfor %}
+
+<div class="row g-3">
+    <div class="col-6 col-md-3">
+        <div class="stat-panel" style="--stat-accent: var(--accent-amber);">
+            <div class="stat-label">Total scan hari ini</div>
+            <div class="stat-value">{{ ringkasan.total_scan_hari_ini }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-panel" style="--stat-accent: var(--accent-blue);">
+            <div class="stat-label">Total barang terdaftar</div>
+            <div class="stat-value">{{ ringkasan.total_barang }}</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-panel" style="--stat-accent: var(--accent-teal);">
+            <div class="stat-label">Confidence rata-rata</div>
+            <div class="stat-value small">
+                {% if ringkasan.confidence_rata_rata %}{{ (ringkasan.confidence_rata_rata * 100) | round(1) }}%{% else %}&mdash;{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="stat-panel" style="--stat-accent: var(--text-muted);">
+            <div class="stat-label">Status kamera</div>
+            <div class="stat-value small" id="dash-status-kamera">&mdash;</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-title">
+                <span>Waktu proses rata-rata</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Processing time</span>
+                <span class="v">{% if ringkasan.processing_time_rata_rata %}{{ ringkasan.processing_time_rata_rata }}s{% else %}&mdash;{% endif %}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-title"><span>Akses cepat</span></div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ url_for('monitoring.monitoring_page') }}" class="btn btn-industrial primary">Buka monitoring</a>
+                <a href="{{ url_for('history.history_page') }}" class="btn btn-industrial">Lihat riwayat</a>
+                <a href="{{ url_for('master_kode.master_kode_page') }}" class="btn btn-industrial">Kelola kode</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+fetch("{{ url_for('camera.camera_status') }}")
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('dash-status-kamera').textContent = data.aktif ? 'Aktif' : 'Nonaktif';
+    })
+    .catch(() => {});
+</script>
+{% endblock %}

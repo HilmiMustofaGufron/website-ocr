@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk | PT Akebono Astra</title>
+    <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/fonts.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="login-shell">
+        <form class="login-card" method="post" action="{{ url_for('auth.login', next=request.args.get('next')) }}"
+            autocomplete="on">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="brand">PT Akebono Brake Astra Indonesia</div>
+            <div class="sub">Sistem pencatatan otomatis barang gudang. Masuk untuk melanjutkan.</div>
+            {% if info %}<div role="status"
+                style="background:var(--accent-dim, #E0EAF8); color:var(--accent, #1F4E9C); font-size:0.82rem; padding:0.55rem 0.8rem; border-radius:6px; margin-bottom:1rem;">
+                {{ info }}</div>{% endif %}
+            {% if error %}<div class="login-error" role="alert">{{ error }}</div>{% endif %}
+            <div class="mb-3">
+                <label class="stat-label d-block" for="username">Username</label>
+                <input type="text" class="form-control industrial" id="username" name="username" required autofocus
+                    autocomplete="username">
+            </div>
+            <div class="mb-3">
+                <label class="stat-label d-block" for="password">Password</label>
+                <input type="password" class="form-control industrial" id="password" name="password" required
+                    autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-industrial primary w-100">Masuk</button>
+        </form>
+    </div>
+</body>
+
+</html>

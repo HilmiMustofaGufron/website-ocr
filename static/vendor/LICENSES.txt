@@ -1,0 +1,3 @@
+Aset pihak ketiga yang disertakan agar aplikasi berjalan tanpa internet:
+- Bootstrap 5.3.3 (bootstrap.min.css, bootstrap.bundle.min.js): lisensi MIT, https://getbootstrap.com
+- Font Inter, JetBrains Mono, Space Grotesk (via paket @fontsource): lisensi SIL Open Font License 1.1

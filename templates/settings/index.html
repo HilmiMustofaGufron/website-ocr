@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="page-eyebrow">Konfigurasi sistem</div>
+<h1 class="page-title">Settings</h1>
+
+<div id="alert-box" class="alert-inline"></div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-title"><span>Pemindaian</span></div>
+            <form id="form-settings">
+                <div class="mb-3">
+                    <label class="stat-label d-block">Threshold YOLO (<span id="label-threshold-yolo">{{ settings.threshold_yolo }}</span>)</label>
+                    <input type="range" class="form-range" id="input-threshold-yolo" min="0" max="1" step="0.05" value="{{ settings.threshold_yolo }}">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="input-auto-scan" {{ 'checked' if settings.auto_scan else '' }}>
+                    <label class="form-check-label" for="input-auto-scan" style="font-family:var(--font-mono); font-size:0.85rem;">Auto scan aktif</label>
+                </div>
+                <div class="mb-3">
+                    <label class="stat-label d-block">Interval scan (ms)</label>
+                    <input type="number" class="form-control industrial" id="input-interval" value="{{ settings.interval_scan }}" min="100" max="60000" step="100" style="max-width:160px;">
+                </div>
+                <div class="mb-3">
+                    <label class="stat-label d-block">Kamera aktif (indeks perangkat atau URL)</label>
+                    <input type="text" class="form-control industrial" id="input-kamera" value="{{ settings.kamera_aktif or '' }}" style="max-width:260px;" placeholder="0">
+                </div>
+                <button type="submit" class="btn btn-industrial primary">Simpan pengaturan</button>
+            </form>
+        </div>
+
+        <div class="panel mt-3">
+            <div class="panel-title"><span>Akun</span></div>
+            <div id="alert-account" class="alert-inline"></div>
+            <form id="form-account" autocomplete="off">
+                <div class="mb-3">
+                    <label class="stat-label d-block">Username baru (kosongkan bila tidak diganti)</label>
+                    <input type="text" class="form-control industrial" id="input-username-baru" placeholder="{{ pengguna_nama }}" style="max-width:260px;">
+                </div>
+                <div class="mb-3">
+                    <label class="stat-label d-block">Password baru (minimal 6 karakter; kosongkan bila tidak diganti)</label>
+                    <input type="password" class="form-control industrial" id="input-password-baru" autocomplete="new-password" style="max-width:260px;">
+                </div>
+                <div class="mb-3">
+                    <label class="stat-label d-block">Ulangi password baru</label>
+                    <input type="password" class="form-control industrial" id="input-konfirmasi-password" autocomplete="new-password" style="max-width:260px;">
+                </div>
+                <div class="mb-3">
+                    <label class="stat-label d-block">Password saat ini (wajib)</label>
+                    <input type="password" class="form-control industrial" id="input-password-sekarang" required autocomplete="current-password" style="max-width:260px;">
+                </div>
+                <button type="submit" class="btn btn-industrial primary">Simpan akun</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel">
+            <div class="panel-title"><span>Catatan</span></div>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+                Threshold YOLO menentukan batas minimum confidence deteksi lokasi kode sebelum dianggap "ada objek".
+                Nilai 0,4 adalah nilai yang diuji.
+            </p>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+                Pembacaan kode memakai <b>mode cepat</b>: satu kali baca, tanpa jalur cadangan. Bacaan yang tidak cocok
+                dengan Master Kode ditandai <b>perlu verifikasi manual</b>. Batas penerimaan dan batas confidence OCR
+                dibuat tetap sesuai pengujian, sehingga tidak ada pengaturan OCR di halaman ini.
+            </p>
+            <p style="font-size:0.85rem; color:var(--text-secondary);">
+                Perubahan di sini berlaku langsung untuk scan berikutnya, tanpa perlu menjalankan ulang aplikasi.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

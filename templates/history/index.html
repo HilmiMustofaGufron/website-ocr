@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<div class="page-eyebrow">Riwayat pemindaian</div>
+<h1 class="page-title">History Scan</h1>
+
+<div id="alert-box" class="alert-inline"></div>
+
+<div class="panel">
+    <div class="toolbar">
+        <input type="date" class="form-control industrial" id="filter-tanggal" style="max-width:170px;">
+        <input type="text" class="form-control industrial" id="filter-kode" placeholder="Cari kode..."
+            style="max-width:200px;">
+        <select class="form-control industrial" id="filter-status" style="max-width:160px;">
+            <option value="">Semua status</option>
+            <option value="VALID">VALID</option>
+            <option value="INVALID">INVALID</option>
+            <option value="NOT_FOUND">NOT_FOUND</option>
+        </select>
+        <button class="btn btn-industrial" id="btn-reset-filter" type="button">Reset</button>
+        <a href="#" class="btn btn-industrial" id="btn-export-pdf">Export PDF</a>
+        <a href="#" class="btn btn-industrial" id="btn-export-excel">Export Excel</a>
+        <span class="ms-auto stat-label" id="jumlah-riwayat">Memuat...</span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="table-industrial">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Kode</th>
+                    <th>Bacaan OCR</th>
+                    <th>Status</th>
+                    <th>Conf. YOLO</th>
+                    <th>Conf. OCR</th>
+                    <th>Waktu</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-body">
+                <tr class="empty-row">
+                    <td colspan="9">Memuat riwayat...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="pagination-controls"></div>
+</div>
+
+<!-- Modal detail scan -->
+<div class="modal-overlay" id="modal-detail">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h5 class="mb-0">Detail Scan</h5>
+            <button class="btn-icon" id="btn-tutup-modal" type="button">Tutup</button>
+        </div>
+        <div id="modal-content"></div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

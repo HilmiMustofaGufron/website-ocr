@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Master Kode{% endblock %}
+{% block content %}
+<div class="page-eyebrow">Referensi validasi OCR</div>
+<h1 class="page-title">Master Kode</h1>
+
+<div id="alert-box" class="alert-inline"></div>
+
+<div class="panel mb-3">
+    <div class="panel-title"><span>Tambah kode baru</span></div>
+    <form id="form-tambah" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="stat-label d-block">Kode</label>
+            <input type="text" class="form-control industrial" id="input-kode" required placeholder="AKL608IEE">
+        </div>
+        <div class="col-md-5">
+            <label class="stat-label d-block">Keterangan</label>
+            <input type="text" class="form-control industrial" id="input-keterangan" placeholder="Opsional">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-industrial primary w-100">Tambah</button>
+        </div>
+        <div class="col-md-2">
+            <label class="btn btn-industrial w-100 mb-0" style="text-align:center; cursor:pointer;">
+                Import Excel
+                <input type="file" id="input-import" accept=".xlsx,.xls" style="display:none;">
+            </label>
+        </div>
+    </form>
+</div>
+
+<div class="panel">
+    <div class="toolbar">
+        <input type="text" class="form-control industrial" id="input-search" placeholder="Cari kode..." style="max-width:260px;">
+        <span class="ms-auto stat-label" id="jumlah-kode">0 kode terdaftar</span>
+    </div>
+    <div style="overflow-x:auto;">
+        <table class="table-industrial">
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Keterangan</th>
+                    <th>Ditambahkan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tabel-body">
+                {% for k in daftar_kode %}
+                <tr data-id="{{ k['id'] }}" data-kode="{{ k['kode'] }}" data-keterangan="{{ k['keterangan'] or '' }}">
+                    <td class="mono">{{ k['kode'] }}</td>
+                    <td>{{ k['keterangan'] or '-' }}</td>
+                    <td class="mono">{{ k['created_at'] }}</td>
+                    <td>
+                        <button class="btn-icon btn-edit">Edit</button>
+                        <button class="btn-icon danger btn-hapus">Hapus</button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="empty-row"><td colspan="4">Belum ada kode terdaftar.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/master_kode.js') }}"></script>
+{% endblock %}

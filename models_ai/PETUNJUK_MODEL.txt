@@ -1,0 +1,7 @@
+Letakkan model YOLO lokasi kode di folder ini dengan nama persis:
+
+    best_lokasi_new.pt
+
+Itu berkas yang sama dengan yang dipakai web lama (folder models_ai/ proyek lama).
+Aplikasi tetap bisa dibuka tanpa model, tetapi pindai tidak berjalan dan Dashboard menampilkan peringatan.
+Nama atau lokasi lain bisa diatur lewat MODEL_YOLO_PATH di berkas .env.

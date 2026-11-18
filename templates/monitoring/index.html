@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Monitoring{% endblock %}
+{% block content %}
+<div class="page-eyebrow">Real-time</div>
+<h1 class="page-title">Monitoring</h1>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="panel">
+            <div class="panel-title">
+                <span>Live camera</span>
+                <span class="beacon">
+                    <span class="beacon-dot state-idle" id="beacon-dot"></span>
+                    <span id="beacon-label">IDLE</span>
+                </span>
+            </div>
+
+            <div class="camera-frame-wrap mb-3" id="camera-wrap">
+                <img id="live-frame" src="" alt="Live camera" style="display:none;">
+                <div class="placeholder" id="camera-placeholder">Kamera belum aktif.<br>Tekan "Mulai kamera" untuk
+                    memulai.</div>
+            </div>
+
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+                <input type="number" class="form-control industrial" id="input-source" value="0" style="width:90px;"
+                    min="0" title="Index device kamera (0/1/2, dst)">
+                <button class="btn btn-industrial primary" id="btn-start-camera">Mulai kamera</button>
+                <button class="btn btn-industrial" id="btn-stop-camera">Hentikan kamera</button>
+                <span class="ms-auto" style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">
+                    FPS: <span id="camera-fps">&mdash;</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="panel">
+            <div class="panel-title"><span>Hasil scan terakhir</span></div>
+            <div class="readout-row">
+                <span class="k">Kode</span>
+                <span class="v" id="r-kode">&mdash;</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Bacaan OCR</span>
+                <span class="v" id="r-teks">&mdash;</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Status</span>
+                <span class="v" id="r-status"><span class="status-badge not-found">&mdash;</span></span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Confidence YOLO</span>
+                <span class="v" id="r-conf-yolo">&mdash;</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Confidence OCR</span>
+                <span class="v" id="r-conf-ocr">&mdash;</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Processing time</span>
+                <span class="v" id="r-proc-time">&mdash;</span>
+            </div>
+        </div>
+
+        <div class="panel mt-3">
+            <div class="panel-title"><span>Pengaturan aktif</span></div>
+            <div class="readout-row">
+                <span class="k">Auto scan</span>
+                <span class="v">{{ 'ON' if pengaturan.auto_scan else 'OFF' }}</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Interval scan</span>
+                <span class="v">{{ pengaturan.interval_scan }}ms</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Threshold YOLO</span>
+                <span class="v">{{ pengaturan.threshold_yolo }}</span>
+            </div>
+            <div class="readout-row">
+                <span class="k">Mode baca</span>
+                <span class="v">Cepat (1x baca)</span>
+            </div>
+        </div>
+        <div class="panel mt-3">
+            <div class="panel-title"><span>Uji dengan foto</span></div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.6rem;">
+                Pindai satu foto tanpa kamera. Hasilnya tampil di panel di atas dan tercatat di History.
+            </p>
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+                <input type="file" class="form-control industrial" id="input-foto" accept="image/*"
+                    style="max-width:260px;">
+                <button class="btn btn-industrial primary" id="btn-uji-foto" type="button">Pindai foto</button>
+            </div>
+            <div class="uji-foto-hasil" id="uji-foto-hasil"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Interval polling diambil dari settings (M4), bukan hardcode -- konsisten
+    // dengan prinsip "operator ubah lewat halaman Settings, tidak perlu restart".
+    const INTERVAL_SCAN_MS = {{ pengaturan.interval_scan }};
+    const AUTO_SCAN_AKTIF = {{ 'true' if pengaturan.auto_scan else 'false' }};
+</script>
+<script src="{{ url_for('static', filename='js/monitoring.js') }}"></script>
+{% endblock %}
